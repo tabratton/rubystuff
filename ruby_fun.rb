@@ -12,11 +12,11 @@ def find_factors(number)
 end
 
 def find_GCD(a, b) 
-  gcd = if b == 0
-          a
-        else
-          find_GCD(b, a % b)
-        end
+  if b == 0
+    a
+  else
+    find_GCD(b, a % b)
+  end
 end
 
 def print_factors(array, num)
