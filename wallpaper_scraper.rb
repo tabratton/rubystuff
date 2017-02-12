@@ -55,11 +55,11 @@ def get_file_name_interfacelift(link)
 end
 
 def get_file_name_wallhaven(wallhaven_link)
-  name = if wallhaven_link.include?('.jpg')
-           wallhaven_link[/wallhaven-\d+.jpg/]
-         else
-           wallhaven_link[/wallhaven-\d+.png/]
-        end
+  if wallhaven_link.include?('.jpg')
+    wallhaven_link[/wallhaven-\d+.jpg/]
+  else
+    wallhaven_link[/wallhaven-\d+.png/]
+  end
 end
 
 def refresh_images
@@ -69,18 +69,12 @@ def refresh_images
     puts "#{$dir_path}/#{get_file_name_interfacelift(counter)}"
     agent = Mechanize.new
     agent.get(counter).save "#{$dir_path}/#{get_file_name_interfacelift(counter)}"
-    #File.open("#{$dir_path}/#{get_file_name_interfacelift(counter)}", 'wb') do | f |
-    #  f.write open(counter).read
-    #end
   end
   wallhaven_list = get_image_urls_wallhaven
   wallhaven_list.each do | counter |
     puts "#{$dir_path}/#{get_file_name_wallhaven(counter)}"
     agent = Mechanize.new
     agent.get(counter).save "#{$dir_path}/#{get_file_name_wallhaven(counter)}"
-    #File.open("#{$dir_path}/#{get_file_name_wallhaven(counter)}", 'wb') do | f |
-    #  f.write open(counter).read
-    #end
   end
 end
 
