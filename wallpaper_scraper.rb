@@ -80,4 +80,7 @@ end
 
 refresh_images
 
-system 'bgchd -dir /home/tyler/Pictures/Wallpapers -intv 5m -bcknd gnome3 -rpl'
+$interval = '5m'
+$desktop = 'gnome3'
+
+system "bgchd -dir #{$dir_path} -intv #{$interval} -bcknd #{$desktop} -rpl"
