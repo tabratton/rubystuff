@@ -9,7 +9,7 @@ $interfacelift_url = 'https://interfacelift.com/wallpaper/downloads/date/wide_16
 $interfacelift_website = 'http://interfacelift.com'
 $wallhaven_url = 'https://alpha.wallhaven.cc/search?q=nature&categories=100&purities=100&resolutions=1920x1080%2C1920x1920%2C2560x1440%2C2560x1600%2C3840x1080%2C5760x1080%2C3840x2160%2C5120x2880&ratios=16x9&sorting=date_added&order=desc&page='
 $wallhaven_website = 'https://wallpapers.wallhaven.cc/wallpapers/full/wallhaven-'
-$dir_path = '/home/tyler/Pictures/Wallpapers'
+$dir_path = '/home/tylerb/Pictures/Wallpapers'
 
 def delete_images
   d = Dir.new($dir_path)
