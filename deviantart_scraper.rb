@@ -7,6 +7,19 @@ require 'openssl'
 $current_offset = 0
 $base_url = 'http://arsenixc.deviantart.com/gallery/?offset='
 $home_path = "#{Dir.home}/Pictures/Wallpaper"
+$running = true
+
+def past_end?
+  test_page = Nokogiri::HTML(open("#{$base_url}#{$current_offset}", {ssl_verify_mode: OpenSSL::SSL::VERIFY_NONE}))
+  more_test = test_page.css('.message')
+  if more_test[0] != nil
+    slightly_more_test = more_test[0].text
+    if slightly_more_test.include?('no deviations')
+      puts 'Reached end of pages, terminating...'
+      $running = false
+    end
+  end
+end
 
 def goto_next_gallery_page
   $current_offset += 24
@@ -36,20 +49,9 @@ def download_image(link)
 end
 
 def start
-  condition = true
-  while condition
-    test_page = Nokogiri::HTML(open("#{$base_url}#{$current_offset}", {ssl_verify_mode: OpenSSL::SSL::VERIFY_NONE}))
-    more_test = test_page.css('.message')
-    if more_test[0] != nil
-      slightly_more_test = more_test[0].text
-      if slightly_more_test.include?('no deviations')
-        puts 'Reached end of pages, terminating...'
-        condition = false
-      end
-    end
-
+  while $running
+    past_end?
     links = get_page_links("#{$base_url}#{$current_offset}")
-
     links.each do |x|
       page = get_individual_page(x['href'])
       image_link = get_full_size_link(page.first)
