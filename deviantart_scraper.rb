@@ -40,7 +40,7 @@ def get_full_size_link(page)
 end
 
 def compact_name(link)
-  link[49..-1]
+  link.split('/')[-1]
 end
 
 def download_image(link)
@@ -49,14 +49,16 @@ def download_image(link)
 end
 
 def start
+  i = 1
   while $running
     past_end?
     links = get_page_links("#{$base_url}#{$current_offset}")
     links.each do |x|
       page = get_individual_page(x['href'])
       image_link = get_full_size_link(page.first)
-      puts "Saving #{compact_name(image_link)}"
+      puts "Saving image ##{i}: #{compact_name(image_link)}"
       download_image(image_link)
+      i += 1
     end
     goto_next_gallery_page
   end
