@@ -7,12 +7,13 @@ require 'openssl'
 @current_offset = 0
 @base_url = 'http://arsenixc.deviantart.com/gallery/?offset='
 @home_path = "#{Dir.home}/Pictures/Wallpaper"
-@pic_num = 0
+@pic_num = 1
 
 def past_end?
   test_page = Nokogiri::HTML(open("#{@base_url}#{@current_offset}", ssl_verify_mode: OpenSSL::SSL::VERIFY_NONE))
   page_message = test_page.css('.message')
-  !(page_message[0].nil? || page_message[0].text.include?('no deviations'))
+  return true if page_message[0].nil?
+  !(page_message[0].text.include?('no deviations'))
 end
 
 def goto_next_gallery_page
@@ -55,10 +56,10 @@ end
 def start
   running = true
   while running
-    running = past_end?
     links = get_page_links("#{@base_url}#{@current_offset}")
     iterate_through_pages(links)
     goto_next_gallery_page
+    running = past_end?
   end
   puts 'Reached end of pages, terminating...'
 end
