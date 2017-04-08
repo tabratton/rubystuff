@@ -4,25 +4,37 @@ require 'nokogiri'
 require 'open-uri'
 require 'openssl'
 
+input_args = ARGV
+
 @current_offset = 0
-@base_url = 'http://arsenixc.deviantart.com/gallery/?offset='
-@home_path = "#{Dir.home}/Pictures/Wallpaper"
+@base_url = "http://#{input_args[0].to_s}?offset="
+@home_path = "#{Dir.home}#{input_args[1].to_s}"
 @pic_num = 1
 
-def past_end?
-  test_page = Nokogiri::HTML(open("#{@base_url}#{@current_offset}", ssl_verify_mode: OpenSSL::SSL::VERIFY_NONE))
-  page_message = test_page.css('.message')
-  return true if page_message[0].nil?
-  !(page_message[0].text.include?('no deviations'))
-end
-
-def goto_next_gallery_page
-  @current_offset += 24
+def start
+  running = true
+  while running
+    links = get_page_links("#{@base_url}#{@current_offset}")
+    iterate_through_pages(links)
+    goto_next_gallery_page
+    running = past_end?
+  end
+  puts 'Reached end of pages, terminating...'
 end
 
 def get_page_links(url)
   page = Nokogiri::HTML(open(url, ssl_verify_mode: OpenSSL::SSL::VERIFY_NONE))
   page.css("a[class='torpedo-thumb-link']")
+end
+
+def iterate_through_pages(page)
+  page.each do |x|
+    individual_page = get_individual_page(x['href'])
+    image_link = get_full_size_link(individual_page.first)
+    puts "Saving image ##{@pic_num}: #{compact_name(image_link)}"
+    download_image(image_link)
+    @pic_num += 1
+  end
 end
 
 def get_individual_page(page)
@@ -43,25 +55,16 @@ def download_image(link)
   agent.get(link).save "#{@home_path}/#{compact_name(link)}"
 end
 
-def iterate_through_pages(page)
-  page.each do |x|
-    individual_page = get_individual_page(x['href'])
-    image_link = get_full_size_link(individual_page.first)
-    puts "Saving image ##{@pic_num}: #{compact_name(image_link)}"
-    download_image(image_link)
-    @pic_num += 1
-  end
+def goto_next_gallery_page
+  @current_offset += 24
 end
 
-def start
-  running = true
-  while running
-    links = get_page_links("#{@base_url}#{@current_offset}")
-    iterate_through_pages(links)
-    goto_next_gallery_page
-    running = past_end?
-  end
-  puts 'Reached end of pages, terminating...'
+def past_end?
+  test_page = Nokogiri::HTML(open("#{@base_url}#{@current_offset}",
+                                  ssl_verify_mode: OpenSSL::SSL::VERIFY_NONE))
+  page_message = test_page.css('.message')
+  return true if page_message[0].nil?
+  !(page_message[0].text.include?('no deviations'))
 end
 
 start
