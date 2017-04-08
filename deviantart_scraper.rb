@@ -10,6 +10,7 @@ input_args = ARGV
 @base_url = "http://#{input_args[0].to_s}?offset="
 @home_path = "#{Dir.home}#{input_args[1].to_s}"
 @pic_num = 1
+@verify_none = OpenSSL::SSL::VERIFY_NONE
 
 def start
   running = true
@@ -23,7 +24,7 @@ def start
 end
 
 def get_page_links(url)
-  page = Nokogiri::HTML(open(url, ssl_verify_mode: OpenSSL::SSL::VERIFY_NONE))
+  page = Nokogiri::HTML(open(url, ssl_verify_mode: @verify_none))
   page.css("a[class='torpedo-thumb-link']")
 end
 
@@ -38,7 +39,7 @@ def iterate_through_pages(page)
 end
 
 def get_individual_page(page)
-  new_page = Nokogiri::HTML(open(page, ssl_verify_mode: OpenSSL::SSL::VERIFY_NONE))
+  new_page = Nokogiri::HTML(open(page, ssl_verify_mode: @verify_none))
   new_page.css('.dev-content-full')
 end
 
@@ -61,7 +62,7 @@ end
 
 def past_end?
   test_page = Nokogiri::HTML(open("#{@base_url}#{@current_offset}",
-                                  ssl_verify_mode: OpenSSL::SSL::VERIFY_NONE))
+                                  ssl_verify_mode: @verify_none))
   page_message = test_page.css('.message')
   return true if page_message[0].nil?
   !(page_message[0].text.include?('no deviations'))
