@@ -1,18 +1,17 @@
 def find_factors(number)
-  factors = Array.new
-  (1..Math.sqrt(number).to_i).each do | current_num |
-    if number % current_num == 0
-      factors.push current_num
+  factors = []
+  (1..Math.sqrt(number).to_i).each do |current_num|
+    if (number % current_num).zero? factors.push current_num
     end
   end
-  factors.reverse_each do | current_num |
-    factors.push (number / current_num).to_i
+  factors.reverse_each do |current_num|
+    factors.push((number / current_num).to_i)
   end
   factors
 end
 
 def find_gcd(a, b)
-  if b == 0
+  if b.zero?
     a
   else
     find_gcd(b, a % b)
@@ -28,7 +27,7 @@ def format_factor_string(array, num)
 end
 
 def power(n, p)
-  if p == 0
+  if p.zero?
     1
   else
     power(n, p - 1) * n
@@ -36,7 +35,7 @@ def power(n, p)
 end
 
 def swap_elements(array)
-  (0..array.length - 2).step(2).each do | x |
+  (0..array.length - 2).step(2).each do |x|
     temp = array[x]
     array[x] = array[x + 1]
     array[x + 1] = temp
@@ -56,5 +55,5 @@ puts "#{num}^#{num2} = #{power(num, num2)}"
 array = Array[1, 2, 3, 4, 5, 6, 7, 8, 9, 10, 11]
 puts "Original array: {#{array.join(', ')}}"
 swap_elements(array)
-puts "Array with all elements swapped with their neighbor: {#{array.join(
-    ', ')}}"
+puts "Array with all elements swapped with their neighbor:
+ {#{array.join(', ')}}"
