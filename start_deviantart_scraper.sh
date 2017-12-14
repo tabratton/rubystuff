@@ -5,4 +5,4 @@
 # the directory in your home folder to save the files to.
 # example:
 
-ruby deviantart_scraper.rb arsenixc.deviantart.com/gallery/ /Pictures/Wallpapers
+ruby deviantart_scraper.rb arsenixc.deviantart.com/gallery/ /Pictures/Wallpapers/arsenixc/

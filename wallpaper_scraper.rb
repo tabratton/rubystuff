@@ -9,7 +9,8 @@ input_array = ARGV
 @pages_to_scrape = input_array[0].to_i
 @interfacelift_url = "https://#{input_array[1].to_s}"
 @wallhaven_url = "https://#{input_array[2].to_s}"
-@dir_path = "#{Dir.home}#{input_array[3].to_s}"
+#@dir_path = "#{Dir.home}#{input_array[3].to_s}"
+@dir_path = "/home/tyler/Pictures/Wallpapers/nature/"
 @interfacelift_website = 'http://interfacelift.com'
 @wallhaven_website = 'https://wallpapers.wallhaven.cc/wallpapers/
   full/wallhaven-'
@@ -23,6 +24,8 @@ end
 
 def delete_images
   d = Dir.new(@dir_path)
+  puts @dir_path
+  puts d
   d.each do | x |
     xn = File.join(@dir_path, x)
     File.delete(xn) if x != '.' && x != '..'
@@ -54,9 +57,9 @@ def get_file_name_interfacelift(link)
 end
 
 def download_image(counter, filename)
-  puts "#{@dir_path}/#{filename}"
+  puts "#{@dir_path}#{filename}"
   agent = Mechanize.new
-  agent.get(counter).save "#{@dir_path}/#{filename}"
+  agent.get(counter).save "#{@dir_path}#{filename}"
 end
 
 def download_wallhaven
@@ -81,6 +84,7 @@ def get_image_urls_wallhaven
                                             {ssl_verify_mode: @verify_none}))
       individual_links = individual_page.css('img#wallpaper')
       full_link = "https:#{individual_links[0]['src']}"
+      puts full_link
       wallhaven_full_links.push(full_link)
     end
   end
