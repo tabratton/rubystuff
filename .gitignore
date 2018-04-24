@@ -4,3 +4,5 @@
 /runConfigurations/
 *.xml
 *.iml
+/.vscode/
+/.idea/

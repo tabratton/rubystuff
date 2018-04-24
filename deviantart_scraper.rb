@@ -3,6 +3,7 @@ require 'mechanize'
 require 'nokogiri'
 require 'open-uri'
 require 'openssl'
+require 'json'
 
 args = JSON.parse(open('deviantart.json').read())
 
