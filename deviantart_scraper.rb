@@ -4,11 +4,11 @@ require 'nokogiri'
 require 'open-uri'
 require 'openssl'
 
-input_args = ARGV
+args = JSON.parse(open('deviantart.json').read())
 
 @current_offset = 0
-@base_url = "http://#{input_args[0].to_s}?offset="
-@home_path = "#{Dir.home}#{input_args[1].to_s}"
+@base_url = args['gallery']
+@home_path = "#{Dir.home}#{args['dir']}"
 @pic_num = 1
 @verify_none = OpenSSL::SSL::VERIFY_NONE
 

@@ -3,16 +3,14 @@ require 'nokogiri'
 require 'open-uri'
 require 'openssl'
 require 'mechanize'
+require 'json'
 
-input_array = ARGV
+args = JSON.parse(open('wallpaper.json').read())
 
-@pages_to_scrape = input_array[0].to_i
-@interfacelift_url = "https://#{input_array[1].to_s}"
-@wallhaven_url = "https://#{input_array[2].to_s}"
-@dir_path = "#{Dir.home}#{input_array[3].to_s}"
-@interfacelift_website = 'http://interfacelift.com'
-@wallhaven_website = 'https://wallpapers.wallhaven.cc/wallpapers/
-  full/wallhaven-'
+@pages_to_scrape = args['pages']
+@interfacelift_url = args['interfacelift']
+@wallhaven_url = args['wallhaven']
+@dir_path = "#{Dir.home}#{args['dir']}"
 @verify_none = OpenSSL::SSL::VERIFY_NONE
 
 def start
@@ -43,7 +41,7 @@ def get_image_urls_interfacelift
     page = Nokogiri::HTML(open(current_url, {ssl_verify_mode: @verify_none}))
     links = page.css('div.download a')
     links.each do | x |
-      full_links.push("#{@interfacelift_website}#{x['href']}")
+      full_links.push("http://interfacelift.com#{x['href']}")
     end
   end
   full_links
