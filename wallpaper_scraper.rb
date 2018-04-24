@@ -21,6 +21,8 @@ end
 
 def delete_images
   d = Dir.new(@dir_path)
+  puts @dir_path
+  puts d
   d.each do | x |
     xn = File.join(@dir_path, x)
     File.delete(xn) if x != '.' && x != '..'
@@ -52,9 +54,9 @@ def get_file_name_interfacelift(link)
 end
 
 def download_image(counter, filename)
-  puts "#{@dir_path}/#{filename}"
+  puts "#{@dir_path}#{filename}"
   agent = Mechanize.new
-  agent.get(counter).save "#{@dir_path}/#{filename}"
+  agent.get(counter).save "#{@dir_path}#{filename}"
 end
 
 def download_wallhaven
@@ -79,6 +81,7 @@ def get_image_urls_wallhaven
                                             {ssl_verify_mode: @verify_none}))
       individual_links = individual_page.css('img#wallpaper')
       full_link = "https:#{individual_links[0]['src']}"
+      puts full_link
       wallhaven_full_links.push(full_link)
     end
   end

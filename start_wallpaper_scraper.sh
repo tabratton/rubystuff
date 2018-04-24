@@ -12,5 +12,5 @@ ruby wallpaper_scraper.rb 2 interfacelift\
 .com/wallpaper/downloads/date/wide_16:9 alpha.wallhaven\
 .cc/search?q=nature&categories=100&purities=100&resolutions=1920x1080\
 %2C1920x1920%2C2560x1440%2C2560x1600%2C3840x1080%2C5760x1080%2C3840x2160\
-%2C5120x2880&ratios=16x9&sorting=date_added&order=desc&page= \
-/Pictures/Wallpapers
+%2C5120x2880&ratios=16x9&sorting=date_added&order=desc&page= #\
+#~/Pictures/Wallpapers/nature
