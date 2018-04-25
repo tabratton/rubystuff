@@ -54,7 +54,7 @@ end
 
 def download_image(link)
   agent = Mechanize.new
-  agent.get(link).save "#{@home_path}/#{compact_name(link)}"
+  agent.get(link).save! "#{@home_path}/#{compact_name(link)}"
 end
 
 def goto_next_gallery_page

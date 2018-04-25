@@ -14,19 +14,8 @@ args = JSON.parse(open('wallpaper.json').read())
 @verify_none = OpenSSL::SSL::VERIFY_NONE
 
 def start
-  delete_images
   download_interfacelift
   download_wallhaven
-end
-
-def delete_images
-  d = Dir.new(@dir_path)
-  puts @dir_path
-  puts d
-  d.each do | x |
-    xn = File.join(@dir_path, x)
-    File.delete(xn) if x != '.' && x != '..'
-  end
 end
 
 def download_interfacelift
@@ -56,7 +45,7 @@ end
 def download_image(counter, filename)
   puts "#{@dir_path}#{filename}"
   agent = Mechanize.new
-  agent.get(counter).save "#{@dir_path}#{filename}"
+  agent.get(counter).save! "#{@dir_path}#{filename}"
 end
 
 def download_wallhaven
